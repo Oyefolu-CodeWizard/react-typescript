@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+type Person = {
+  name: string;
+};
+
 function Component() {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
@@ -13,9 +17,10 @@ function Component() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     // const formData = new FormData(e.target as HTMLFormElement);
-
     const data = Object.fromEntries(formData);
     console.log(data);
+    const text = formData.get("text") as string;
+    const person: Person = { name: data.text as string };
   };
 
   return (
