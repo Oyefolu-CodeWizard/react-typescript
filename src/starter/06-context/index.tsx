@@ -17,7 +17,7 @@ function Component() {
       <button
         onClick={() => {
           if (context.theme === "dark") {
-            context.setTheme("system");
+            context.setTheme("light");
             return;
           }
           context.setTheme("dark");
