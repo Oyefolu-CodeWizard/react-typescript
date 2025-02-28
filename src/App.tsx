@@ -1,9 +1,8 @@
-import Component from "./starter/07-reducers";
+import Component from "./starter/08-fetch-data";
 
 function App() {
   return (
     <main>
-      <h2>React & TypeScript</h2>
       <Component />
     </main>
   );
