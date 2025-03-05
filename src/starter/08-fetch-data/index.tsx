@@ -1,50 +1,31 @@
-import { useState, useEffect } from "react";
-import { type Tour, tourSchema } from "./types";
-const url = "https://www.course-api.com/react-tours-project";
+import { fetchTours } from "./types";
+import { useQuery } from "@tanstack/react-query";
 
 function Component() {
-  // tours
-  const [tours, setTours] = useState<Tour[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState<string | null>(null);
+  const {
+    isPending,
+    isError,
+    error,
+    data: tours,
+  } = useQuery({
+    queryKey: ["tours"],
+    queryFn: fetchTours,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Failed to fetch tours...`);
-
-        const rawData: Tour[] = await response.json();
-        setTours(rawData);
-        console.log(rawData);
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "there was an error...";
-        setIsError(message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (isLoading) {
-    return <h3>Loading...</h3>;
-  }
-
-  if (isError) {
-    return <h3>Error {isError}</h3>;
-  }
-
+  if (isPending) return <h2>Loading...</h2>;
+  if (isError) return <h2>Error: {error.message}</h2>;
   return (
     <div>
-      <h2>React & Typescript</h2>
+      <h2 className="mb-1">Tours</h2>
       {tours.map((tour) => {
-        return <h2>{tour.name}</h2>;
+        return (
+          <p key={tour.id} className="mb-1">
+            {tour.name}
+          </p>
+        );
       })}
-      <h2>Fetch Data</h2>
     </div>
   );
 }
+
 export default Component;
